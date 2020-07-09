@@ -8,18 +8,64 @@ const fs = require("fs");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
+newTeam = []
+
 const render = require("./lib/htmlRenderer");
 
 function createTeam(){
     inquirer.prompt({
       type: "list",
       message:"Which member of the team would you like to add?",
-      choices:["Add an employee", "Add an intern", "Add an engineer", "Add a manager"],
-      name:"rolechoice"          
+      choices:["Add an intern", "Add an engineer", "Add a manager"],
+      name:"role"          
+    }).then(function(response){
+        if (response.role === "Add an intern"){
+            newIntern();
+        }
+        else if (response.role === "Add an engineer"){
+            newEngineer();
+        }
+        else if (response.role === "Add a manager"){
+            newManager();
+        }
+        else if (response.role === "Create Team Page"){
+            createTeamPage();
+        }
+            
     })
 }
 
+function newIntern(){
+    console.log("adding Intern")
+    inquirer.prompt([
+        {
+         type: "input",
+         message: "What's their name?",
+         name: "name",
+     },
+     {
+         type: "input",
+         message: "Employee ID Number?",
+         name: "id",
+     },
+     {
+         type: "input",
+         message: "What is their email?",
+         name: "email",
+     },
+     {
+         type: "input",
+         message: "What school are they attending?",
+         name: "school",
+     },
+ ]).then(function(internRes){
+    const newIntern = new Intern(internRes.name, internRes.id, internRes.email, internRes.school);
+    
+    newTeam.push(newIntern);
 
+
+    createTeam();
+}
 
 
 
